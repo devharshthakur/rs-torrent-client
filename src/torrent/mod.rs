@@ -1,5 +1,6 @@
 use thiserror::Error;
 pub mod file;
+pub mod info_hash;
 
 #[derive(Debug, Error)]
 pub enum TorrentError {

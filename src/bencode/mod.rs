@@ -13,7 +13,7 @@ pub enum BencodeValue {
     String(Vec<u8>),
     Integer(i64),
     List(Vec<BencodeValue>),
-    Dicts(HashMap<Vec<u8>, BencodeValue>),
+    Dict(HashMap<Vec<u8>, BencodeValue>),
 }
 
 /// Custom error type for Bencode operations.

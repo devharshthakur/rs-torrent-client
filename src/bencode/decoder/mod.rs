@@ -289,7 +289,7 @@ fn decode_next<R: Read>(
         b'0'..=b'9' => decode_string(reader).map(BencodeValue::String),
         b'i' => decode_integer(reader).map(BencodeValue::Integer),
         b'l' => decode_list(reader).map(BencodeValue::List),
-        b'd' => decode_dict(reader).map(BencodeValue::Dicts),
+        b'd' => decode_dict(reader).map(BencodeValue::Dict),
         _ => Err(BencodeError::InvalidFormat(format!(
             "Unexpected character: {}",
             first_byte as char

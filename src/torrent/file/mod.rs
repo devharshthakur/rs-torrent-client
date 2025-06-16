@@ -1,16 +1,8 @@
-use super::TorrentError;
-use super::TorrentResult;
-use crate::bencode::BencodeValue;
 use anyhow::Ok;
 use anyhow::Result;
-use clap::builder::Str;
-use sha1::Digest;
-use std::collections::HashMap;
-use std::path::Path;
 use std::path::PathBuf;
 use std::time::SystemTime;
-use std::time::UNIX_EPOCH;
-use tracing::instrument;
+use super::TorrentError;
 
 #[derive(Debug, PartialEq, Clone)]
 pub struct TorrentFile {
@@ -75,9 +67,6 @@ fn parse_pieces(pieces_bytes: &[u8]) -> Result<Vec<[u8; 20]>> {
 }
 
 impl TorrentFile {
-    fn calculate_sha1_hash(data: &[u8]) -> [u8; 20] {
-        sha1::Sha1::digest(data).into()
-    }
     /// Returns the total length of all files in the torrent.
     pub fn total_length(&self) -> i64 {
         if !self.info.is_directory {

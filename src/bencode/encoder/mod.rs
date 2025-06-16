@@ -98,7 +98,7 @@ fn encode_value<W: Write>(writer: &mut W, value: &BencodeValue) -> BencodeResult
         BencodeValue::String(s) => encode_string(writer, s),
         BencodeValue::Integer(i) => encode_integer(writer, *i),
         BencodeValue::List(list) => encode_list(writer, list),
-        BencodeValue::Dicts(dict) => encode_dict(writer, dict),
+        BencodeValue::Dict(dict) => encode_dict(writer, dict),
     }
 }
 
