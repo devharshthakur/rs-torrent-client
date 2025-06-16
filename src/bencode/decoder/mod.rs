@@ -1,6 +1,7 @@
 use super::BencodeError;
+use super::BencodeResult;
 use super::BencodeValue;
-use super::Result;
+
 use std::collections::HashMap;
 use std::io::{self, Read};
 use tracing::instrument;
@@ -24,7 +25,9 @@ use tracing::instrument;
 /// For input "5:hello", this function will return a Vec<u8> containing [104, 101, 108, 108, 111]
 
 #[instrument(skip(reader), level = "trace")]
-pub fn decode_string<R: Read>(reader: &mut std::iter::Peekable<io::Bytes<R>>) -> Result<Vec<u8>> {
+pub fn decode_string<R: Read>(
+    reader: &mut std::iter::Peekable<io::Bytes<R>>,
+) -> BencodeResult<Vec<u8>> {
     // Not implemented yet
     let length_str = read_until(reader, b':')?;
     let length = length_str
@@ -61,7 +64,7 @@ pub fn decode_string<R: Read>(reader: &mut std::iter::Peekable<io::Bytes<R>>) ->
 pub fn read_until<R: Read>(
     reader: &mut std::iter::Peekable<io::Bytes<R>>,
     delimiter: u8,
-) -> Result<String> {
+) -> BencodeResult<String> {
     let mut buffer = Vec::new();
 
     loop {
@@ -119,7 +122,9 @@ pub fn read_until<R: Read>(
 /// For input "i42e", this function will return Ok(42)
 
 #[instrument(skip(reader), level = "trace")]
-pub fn decode_integer<R: Read>(reader: &mut std::iter::Peekable<io::Bytes<R>>) -> Result<i64> {
+pub fn decode_integer<R: Read>(
+    reader: &mut std::iter::Peekable<io::Bytes<R>>,
+) -> BencodeResult<i64> {
     let first_byte = reader
         .next()
         .ok_or(BencodeError::UnexpectedEOI)?
@@ -175,7 +180,7 @@ pub fn decode_integer<R: Read>(reader: &mut std::iter::Peekable<io::Bytes<R>>) -
 #[instrument(skip(reader), level = "trace")]
 fn decode_list<R: Read>(
     reader: &mut std::iter::Peekable<io::Bytes<R>>,
-) -> Result<Vec<BencodeValue>> {
+) -> BencodeResult<Vec<BencodeValue>> {
     let first_byte = reader
         .next()
         .ok_or(BencodeError::UnexpectedEOI)?
@@ -231,7 +236,7 @@ fn decode_list<R: Read>(
 #[instrument(skip(reader), level = "trace")]
 fn decode_dict<R: Read>(
     reader: &mut std::iter::Peekable<io::Bytes<R>>,
-) -> Result<HashMap<Vec<u8>, BencodeValue>> {
+) -> BencodeResult<HashMap<Vec<u8>, BencodeValue>> {
     let first_byte = reader
         .next()
         .ok_or(BencodeError::UnexpectedEOI)?
@@ -271,7 +276,9 @@ fn decode_dict<R: Read>(
 }
 
 #[instrument(skip(reader), level = "trace")]
-fn decode_next<R: Read>(reader: &mut std::iter::Peekable<io::Bytes<R>>) -> Result<BencodeValue> {
+fn decode_next<R: Read>(
+    reader: &mut std::iter::Peekable<io::Bytes<R>>,
+) -> BencodeResult<BencodeValue> {
     let &first_byte = reader
         .peek()
         .ok_or(BencodeError::UnexpectedEOI)?

@@ -2,6 +2,10 @@
 
 A **BitTorrent client** implementation in Rust, aiming to support downloading files using the BitTorrent protocol. This project is a work-in-progress and currently in its **very early phase**—core components are being built from the ground up! 🦀
 
+
+📝 **This project is a Rust rewrite of the original [Go Torrent Client](https://github.com/piyushgupta53/go-torrent-client).**
+
+
 ## ✨ Project Goals
 
 - **Bencode Encoding/Decoding**
@@ -44,6 +48,7 @@ This project is **actively under development** and is in its initial stages. Che
 
 ## 🙏 Acknowledgments
 
+- Inspired by the original [Go Torrent Client](https://github.com/piyushgupta53/go-torrent-client) ([piyushgupta53/go-torrent-client](https://github.com/piyushgupta53/go-torrent-client))
 - [BitTorrent Protocol Specification](https://wiki.theory.org/BitTorrentSpecification)
 - [Bencode Specification](https://wiki.theory.org/BitTorrentSpecification#Bencoding)
 

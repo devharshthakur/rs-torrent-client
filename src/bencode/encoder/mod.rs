@@ -1,6 +1,6 @@
 use super::BencodeError;
+use super::BencodeResult;
 use super::BencodeValue;
-use super::Result;
 use std::collections::HashMap;
 use std::io::Write;
 use tracing::instrument;
@@ -13,7 +13,7 @@ use tracing::instrument;
 /// For input: b"hello"
 /// Output: "5:hello"
 #[instrument(skip(writer, s), level = "trace")]
-fn encode_string<W: Write>(writer: &mut W, s: &[u8]) -> Result<()> {
+fn encode_string<W: Write>(writer: &mut W, s: &[u8]) -> BencodeResult<()> {
     write!(writer, "{}:", s.len())?;
     writer.write_all(s)?;
     Ok(())
@@ -27,7 +27,7 @@ fn encode_string<W: Write>(writer: &mut W, s: &[u8]) -> Result<()> {
 /// For input: 42
 /// Output: "i42e"
 #[instrument(skip(writer), level = "trace")]
-fn encode_integer<W: Write>(writer: &mut W, i: i64) -> Result<()> {
+fn encode_integer<W: Write>(writer: &mut W, i: i64) -> BencodeResult<()> {
     write!(writer, "i{}e", i)?;
     Ok(())
 }
@@ -40,7 +40,7 @@ fn encode_integer<W: Write>(writer: &mut W, i: i64) -> Result<()> {
 /// For input: [1, "hello"]
 /// Output: "li1e5:helloe"
 #[instrument(skip(writer, list), level = "trace")]
-fn encode_list<W: Write>(writer: &mut W, list: &[BencodeValue]) -> Result<()> {
+fn encode_list<W: Write>(writer: &mut W, list: &[BencodeValue]) -> BencodeResult<()> {
     writer.write_all(b"l")?;
     for item in list {
         encode_value(writer, item)?;
@@ -58,7 +58,10 @@ fn encode_list<W: Write>(writer: &mut W, list: &[BencodeValue]) -> Result<()> {
 /// For input: {"key": 42}
 /// Output: "d3:keyi42ee"
 #[instrument(skip(writer, dict), level = "trace")]
-fn encode_dict<W: Write>(writer: &mut W, dict: &HashMap<Vec<u8>, BencodeValue>) -> Result<()> {
+fn encode_dict<W: Write>(
+    writer: &mut W,
+    dict: &HashMap<Vec<u8>, BencodeValue>,
+) -> BencodeResult<()> {
     writer.write_all(b"d")?;
     let mut keys: Vec<&Vec<u8>> = dict.keys().collect();
     keys.sort_unstable();
@@ -90,7 +93,7 @@ fn encode_dict<W: Write>(writer: &mut W, dict: &HashMap<Vec<u8>, BencodeValue>) 
 /// For input: BencodeValue::Dicts({"key": 42})
 /// Output: "d3:keyi42ee"
 #[instrument(skip(writer), level = "trace")]
-fn encode_value<W: Write>(writer: &mut W, value: &BencodeValue) -> Result<()> {
+fn encode_value<W: Write>(writer: &mut W, value: &BencodeValue) -> BencodeResult<()> {
     match value {
         BencodeValue::String(s) => encode_string(writer, s),
         BencodeValue::Integer(i) => encode_integer(writer, *i),
@@ -107,6 +110,6 @@ fn encode_value<W: Write>(writer: &mut W, value: &BencodeValue) -> Result<()> {
 /// For input: BencodeValue::Integer(42)
 /// Output: "i42e"
 #[instrument(skip(writer), level = "debug")]
-pub fn encode<W: Write>(writer: &mut W, value: &BencodeValue) -> Result<()> {
+pub fn encode<W: Write>(writer: &mut W, value: &BencodeValue) -> BencodeResult<()> {
     encode_value(writer, value)
 }

@@ -41,4 +41,4 @@ pub enum BencodeError {
     DictKeyNotString,
 }
 
-pub type Result<T> = std::result::Result<T, BencodeError>;
+pub type BencodeResult<T> = std::result::Result<T, BencodeError>;
