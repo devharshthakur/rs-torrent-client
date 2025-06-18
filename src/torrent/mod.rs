@@ -24,6 +24,9 @@ pub enum TorrentError {
 
     #[error("Path conversion error: {0}")]
     PathConversion(String),
+
+    #[error("Date parse error")]
+    DateParseError,
 }
 
 pub type TorrentResult<T> = std::result::Result<T, TorrentError>;
