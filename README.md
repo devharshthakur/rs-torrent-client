@@ -9,15 +9,24 @@ A **BitTorrent client** implementation in Rust, aiming to support downloading fi
 ## ✨ Project Goals
 
 - **Bencode Encoding/Decoding**
-  - Full support for all Bencode types (strings, integers, lists, dictionaries)
+  - Full support for all Bencode types:
+    - Strings
+    - Integers
+    - Lists
+    - Dictionaries
   - Robust error handling and validation
+
 - **Torrent File Processing**
-  - Parse `.torrent` files (single-file & multi-file)
+  - Parse `.torrent` files:
+    - Single-file
+    - Multi-file
   - Info hash calculation
   - Piece hash extraction
+
 - **Peer Discovery & Communication**
   - HTTP tracker support
   - Peer handshake & message protocol
+
 - **Download Functionality**
   - Piece/block management
   - Concurrent downloads
