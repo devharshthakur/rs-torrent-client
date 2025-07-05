@@ -133,50 +133,71 @@ Parses the info dictionary from the torrent file.
 4. Returns an error if any required field is missing or invalid.
 */
 fn parse_info_dict(value: BencodeValue) -> Result<InfoDict> {
+    // Step 1: Validate that the input is a dictionary
     let dict = match value {
         BencodeValue::Dict(d) => d,
         _ => {
             return Err(TorrentError::InvalidFormat("Info is not a dictionary".to_string()).into())
         }
     };
-    // Extract required fields from dict
+
+    // Step 2: Extract and validate piece_length (required field)
     let piece_length = match dict.get(&b"piece length".to_vec()) {
         Some(BencodeValue::Integer(i)) => *i,
         _ => return Err(TorrentError::MissingField("piece length".to_string()).into()),
     };
+
+    // Step 3: Extract and validate pieces bytes (required field)
     let pieces_bytes = match dict.get(&b"pieces".to_vec()) {
         Some(BencodeValue::String(s)) => s.clone(),
         _ => return Err(TorrentError::MissingField("pieces".to_string()).into()),
     };
+
+    // Step 4: Extract private flag (optional field, defaults to false)
     let private = match dict.get(&b"private".to_vec()) {
         Some(BencodeValue::Integer(1)) => true,
         _ => false,
     };
+
+    // Step 5: Extract and validate name (required field, must be UTF-8)
     let name = match dict.get(&b"name".to_vec()) {
         Some(BencodeValue::String(s)) => String::from_utf8(s.clone())
             .map_err(|e| TorrentError::InvalidFormat(format!("Invalid name (not UTF-8): {}", e)))?,
         _ => return Err(TorrentError::MissingField("name".to_string()).into()),
     };
+
+    // Step 6: Extract length (optional field for single-file torrents)
     let length = match dict.get(&b"length".to_vec()) {
         Some(BencodeValue::Integer(i)) => Some(*i),
         _ => None,
     };
+
+    // Step 7: Parse files list (optional field for multi-file torrents)
     let files = match dict.get(&b"files".to_vec()) {
         Some(BencodeValue::List(list)) => {
             let mut files_vec = Vec::new();
+
+            // Iterate through each file entry in the list
             for file_val in list {
+                // Step 7a: Validate that each file entry is a dictionary
                 if let BencodeValue::Dict(file_dict) = file_val {
+                    // Step 7b: Extract file length (required for each file)
                     let length = match file_dict.get(&b"length".to_vec()) {
                         Some(BencodeValue::Integer(i)) => *i,
                         _ => {
                             return Err(TorrentError::MissingField("file length".to_string()).into())
                         }
                     };
+
+                    // Step 7c: Extract and validate file path (required for each file)
                     let path = match file_dict.get(&b"path".to_vec()) {
                         Some(BencodeValue::List(path_list)) => {
                             let mut path_vec = Vec::new();
+
+                            // Step 7d: Process each path component
                             for p in path_list {
                                 if let BencodeValue::String(s) = p {
+                                    // Convert path component from bytes to UTF-8 string
                                     path_vec.push(String::from_utf8(s.clone()).map_err(|e| {
                                         TorrentError::InvalidFormat(format!(
                                             "Invalid file path (not UTF-8): {}",
@@ -194,6 +215,8 @@ fn parse_info_dict(value: BencodeValue) -> Result<InfoDict> {
                         }
                         _ => return Err(TorrentError::MissingField("file path".to_string()).into()),
                     };
+
+                    // Step 7e: Create FileDict and add to files vector
                     files_vec.push(FileDict { length, path });
                 } else {
                     return Err(
@@ -203,9 +226,13 @@ fn parse_info_dict(value: BencodeValue) -> Result<InfoDict> {
             }
             files_vec
         }
-        _ => Vec::new(),
+        _ => Vec::new(), // No files list means single-file torrent
     };
+
+    // Step 8: Determine if this is a directory (multi-file) torrent
     let is_directory = !files.is_empty();
+
+    // Step 9: Construct and return the InfoDict
     Ok(InfoDict {
         piece_length,
         pieces: pieces_bytes,

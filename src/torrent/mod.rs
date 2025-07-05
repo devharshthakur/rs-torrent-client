@@ -1,7 +1,7 @@
+use serde_bencode;
 use thiserror::Error;
 pub mod file;
 pub mod info_hash;
-
 #[derive(Debug, Error)]
 pub enum TorrentError {
     #[error("I/O error: {0}")]
@@ -27,6 +27,16 @@ pub enum TorrentError {
 
     #[error("Date parse error")]
     DateParseError,
+
+    #[error("Url Parsing error: {0}")]
+    UrlParse(#[from] url::ParseError),
+
+    #[error("HTTP request error: {0}")]
+    HttpRequest(#[from] reqwest::Error),
+
+    #[error("Bencode deserialization error: {0}")]
+    BencodeDe(#[from] serde_bencode::Error),
 }
 
+/// Result type for torrent operations derived from `std::result`
 pub type TorrentResult<T> = std::result::Result<T, TorrentError>;

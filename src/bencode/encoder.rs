@@ -8,6 +8,7 @@ use tracing::instrument;
 /**
  Encodes a byte slice as a bencode string.
 
+
  This function writes the length of the byte slice followed by a colon and then the bytes themselves.
 
  # Example Output
