@@ -62,5 +62,20 @@ pub enum BencodeError {
     #[error("Dictionary keys must be strings")]
     DictKeyNotString,
 }
+/// Result type alias for Bencode operations.
+///
+/// This type alias provides a convenient way to handle results from bencode
+/// encoding and decoding operations. It wraps the standard Result type with
+/// BencodeError as the error variant.
+///
+/// # Examples
+/// ```rust
+/// use crate::bencode::{BencodeResult, BencodeValue};
+///
+/// fn decode_something() -> BencodeResult<BencodeValue> {
+///     // Decoding logic here
+///     Ok(BencodeValue::Integer(42))
+/// }
+///
 
 pub type BencodeResult<T> = std::result::Result<T, BencodeError>;
