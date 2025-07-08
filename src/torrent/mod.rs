@@ -1,3 +1,6 @@
+//! Torrent file parsing and error handling logic.
+//!
+//! This module provides types and error handling for working with .torrent files, including parsing, validation, and error reporting.
 use serde_bencode;
 use thiserror::Error;
 pub mod file;

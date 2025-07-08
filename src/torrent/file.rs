@@ -1,3 +1,6 @@
+//! Torrent file structure and parsing logic.
+//!
+//! This module defines the TorrentFile struct and related helpers for parsing, validating, and working with .torrent file metadata.
 use crate::bencode::BencodeValue;
 use crate::torrent::info_hash;
 

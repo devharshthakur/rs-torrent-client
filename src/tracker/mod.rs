@@ -1,11 +1,16 @@
-use crate::bencode::BencodeValue;
+//! Tracker client logic for the BitTorrent protocol.
+//!
+//! This module implements communication with BitTorrent trackers, including:
+//! - Announce requests and responses
+//! - Peer parsing (compact and non-compact)
+//! - Peer ID generation and URL encoding helpers
+//!
+//! Used by the client to discover peers for a torrent.
 use crate::torrent::file::TorrentFile;
-use crate::torrent::TorrentError;
 use anyhow::{Ok, Result};
-use hex;
 use rand::Rng;
 use serde::Deserialize;
-use std::net::{IpAddr, Ipv4Addr, Ipv6Addr};
+use std::net::{IpAddr, Ipv4Addr};
 
 // Represents a client communicating with a bittorent tracker
 #[derive(Debug)]
@@ -76,7 +81,7 @@ impl Client {
     }
     /// Sends an announce request to the tracker to get a list of peers.
     #[tracing::instrument(skip(self, torrent), level = "debug")]
-    pub async fn announce(&self, torrent: &TorrentFile) -> Result<AnnouceResponse> {
+    pub async fn announce(&self, torrent: &TorrentFile) -> Result<AnnounceResponse> {
         let request = AnnounceRequest {
             info_hash: torrent.info_hash,
             peer_id: self.peer_id,
@@ -104,10 +109,37 @@ impl Client {
         Self::parse_announce_response(&response_bytes)
     }
 
+    /// Parses the response from a BitTorrent tracker announce request.
+    ///
+    /// This function takes a byte slice containing the bencoded tracker response,
+    /// deserializes it into a `TrackerResponse` struct, and then extracts the list of peers.
+    /// It handles both the compact and non-compact peer list formats as specified by the BitTorrent protocol:
+    /// - **Compact format**: The "peers" field is a byte string where each peer is represented by 6 bytes
+    ///   (4 bytes for the IPv4 address and 2 bytes for the port, in network byte order).
+    /// - **Non-compact format**: The "peers" field is a list of dictionaries, each containing "ip" and "port".
+    ///
+    /// # Arguments
+    /// * `bytes` - A byte slice containing the bencoded tracker response.
+    ///
+    /// # Returns
+    /// * `Result<AnnounceResponse>` - The parsed announce response, including the interval and the list of peers.
+    ///
+    /// # Example
+    /// ```
+    /// let response_bytes = ...; // bytes from tracker
+    /// let announce_response = Client::parse_announce_response(&response_bytes)?;
+    /// println!("Interval: {}", announce_response.interval);
+    /// for peer in announce_response.peers {
+    ///     println!("Peer: {}:{}", peer.ip, peer.port);
+    /// }
+    /// ```
     fn parse_announce_response(bytes: &[u8]) -> Result<AnnounceResponse> {
+        // 1. Deserialize the tracker response from bencoded bytes
         let tracker_response: TrackerResponse = serde_bencode::from_bytes(bytes)?;
 
+        // 2. Parse the peers field, handling both compact and non-compact forms
         let peers = match tracker_response.peers {
+            // 2a. Compact: each peer is 6 bytes (4 for IP, 2 for port)
             Peers::Compact(bytes) => bytes
                 .chunks_exact(6)
                 .map(|chunk| {
@@ -119,6 +151,7 @@ impl Client {
                     }
                 })
                 .collect(),
+            // 2b. Non-compact: each peer is a dictionary with "ip" and "port"
             Peers::NonCompact(dicts) => dicts
                 .into_iter()
                 .filter_map(|dict| {
@@ -130,6 +163,7 @@ impl Client {
                 .collect(),
         };
 
+        // 3. Return the parsed announce response
         Ok(AnnounceResponse {
             interval: tracker_response.interval,
             peers,
@@ -188,8 +222,7 @@ fn url_encode(bytes: &[u8]) -> String {
                 encoded.push(byte as char);
             }
             _ => {
-                encoded.push('%');
-                encoded.push_str(&hex::encode(&[byte]));
+                encoded.push_str(&format!("%{:02X}", byte));
             }
         }
     }

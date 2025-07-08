@@ -35,14 +35,19 @@ A **BitTorrent client** implementation in Rust, aiming to support downloading fi
 ## 📁 (Tentative) Project Structure
 
 ```
-.
-├── src/                # Main source code
-├── bencode/            # Bencode encoding/decoding
-├── torrent/            # Torrent file processing
-├── tracker/            # Tracker protocol implementation
-├── peer/               # Peer communication
-├── download/           # Download management
-└── docs/               # Documentation & checkpoints
+src/
+  ├── main.rs         # Binary entry point
+  ├── lib.rs          # Library root, re-exports modules
+  ├── bencode/
+  │     ├── mod.rs
+  │     ├── encoder.rs
+  │     └── decoder.rs
+  ├── torrent/
+  │     ├── mod.rs
+  │     ├── file.rs
+  │     └── info_hash.rs
+  ├── tracker/
+  │     └── mod.rs             # Documentation & checkpoints
 ```
 
 ## 🚀 Status
