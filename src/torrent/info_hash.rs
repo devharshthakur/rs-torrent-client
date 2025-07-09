@@ -1,3 +1,6 @@
+//! Info hash calculation for torrent metadata.
+//!
+//! This module provides a function to compute the SHA-1 hash of the info dictionary in a .torrent file, as required by the BitTorrent protocol.
 use crate::bencode;
 use crate::bencode::BencodeValue;
 use anyhow::Ok;

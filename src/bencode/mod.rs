@@ -1,3 +1,7 @@
+//! Bencode encoding/decoding core logic for the BitTorrent protocol.
+//!
+//! This module defines the BencodeValue enum, error types, and result types for working with bencoded data.
+//! It is used throughout the project for parsing and serializing .torrent files and tracker responses.
 use std::collections::HashMap;
 use thiserror::Error;
 pub mod decoder;
