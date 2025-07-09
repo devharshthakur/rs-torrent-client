@@ -1,4 +1,5 @@
 run:
+	cargo fmt
 	cargo run 
 
 format:
@@ -7,3 +8,5 @@ format:
 build:
 	cargo fmt
 	cargo build
+clean:
+	cargo clean

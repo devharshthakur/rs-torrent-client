@@ -39,6 +39,15 @@ pub enum TorrentError {
 
     #[error("Bencode deserialization error: {0}")]
     BencodeDe(#[from] serde_bencode::Error),
+
+    #[error("Handshake failed: Invalid protocol identifier")]
+    HandshakeInvalidProtocol,
+
+    #[error("Handshake failed: Info hash mismatch")]
+    HandshakeInfoHashMismatch,
+
+    #[error("Handshake timed out")]
+    HandshakeTimeout,
 }
 
 /// Result type for torrent operations derived from `std::result`
