@@ -20,7 +20,7 @@ Thank you for your interest in contributing! Please follow these guidelines to e
   - `chore: short description` for maintenance tasks (e.g., updating dependencies, build scripts)
   - `perf: short description` for performance improvements
   - Add a longer description if needed.
-- [x] **Update [`md/setup.md`](md/setup.md)** to reflect any changes to project status or features.
+- [x] **Update [setup.md](md/setup.md)** to reflect any changes to project status or features.
 - [x] **Test thoroughly** before opening a PR. Ensure the application builds successfully and passes all tests (if there are any).
 
 > **Note:** A `Makefile` is available at the project root to simplify common tasks such as formatting, building, running, and cleaning the project. As the project evolves, additional commands and workflows may be added to the Makefile, allowing you to perform complex operations with a single command.
@@ -38,7 +38,7 @@ Thank you for your interest in contributing! Please follow these guidelines to e
 
 ## 🧑‍💻 Setup Instructions
 
-- See [`md/setup.md`](md/setup.md) for setup instructions.
+- See [setup.md](md/setup.md) for setup instructions.
 - Recommended: Use [GitHub Desktop](https://desktop.github.com/) for an easy workflow (see setup guide for details).
 - Alternatively, use the [GitHub CLI](https://cli.github.com/) or standard git commands.
 
