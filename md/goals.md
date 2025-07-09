@@ -35,4 +35,4 @@ This document outlines the long-term goals and planned features for the client.
 
 ---
 
-> For current implementation status, see [docs/CHECKPOINT.md](docs/checkpoint.md). 
+> For current implementation status, see [docs/CHECKPOINT.md](docs/checkpoint.md).

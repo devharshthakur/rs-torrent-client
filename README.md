@@ -4,15 +4,11 @@ A **BitTorrent client** implementation in Rust, aiming to support downloading fi
 
 📝 **This project is a Rust rewrite of the original [Go Torrent Client](https://github.com/piyushgupta53/go-torrent-client).**
 
----
-
 ## 📈 Project Status
 
 The current implementation status and roadmap are tracked in [docs/CHECKPOINT.md](md/checkpoint.md). Please refer to it for up-to-date progress and details on what is implemented.
 
 For the project's long-term goals and planned features, see [goals.md](md/goals.md).
-
----
 
 ## 📁 Project Structure
 
@@ -34,8 +30,6 @@ src/
         ├── mod.rs
         └── handshake.rs
 ```
-
----
 
 ## 🙏 Acknowledgments
 

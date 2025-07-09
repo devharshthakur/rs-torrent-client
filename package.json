@@ -1,0 +1,17 @@
+{
+  "name": "rs-torrent-client",
+  "version": "1.0.0-beta",
+  "description": "A Bittorrent client implemented in rust",
+  "main": "index.js",
+  "scripts": {
+    "format": "prettier --write \"**/*.md\""
+  },
+  "author": "Harsh Thakur",
+  "license": "MIT",
+  "packageManager": "pnpm@10.13.1",
+  "devDependencies": {
+    "@types/node": "^24.0.12",
+    "prettier": "^3.6.2",
+    "typescript": "^5.8.3"
+  }
+}

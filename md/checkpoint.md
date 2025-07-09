@@ -27,5 +27,4 @@ _Last updated: July 9, 2025_
   - [x] Module structure and handshake.rs stub present
   - [x] File: `src/peer/handshake.rs`, `src/peer/mod.rs`
 
-
 _See [goals.md](../goals.md) for long-term goals and planned features._
