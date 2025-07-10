@@ -4,13 +4,15 @@
   "description": "A Bittorrent client implemented in rust",
   "main": "index.js",
   "scripts": {
-    "format": "prettier --write \"**/*.md\""
+    "format": "prettier --write \"**/*.md\"",
+    "prepare": "husky"
   },
   "author": "Harsh Thakur",
   "license": "MIT",
   "packageManager": "pnpm@10.13.1",
   "devDependencies": {
     "@types/node": "^24.0.12",
+    "husky": "^9.1.7",
     "prettier": "^3.6.2",
     "typescript": "^5.8.3"
   },
