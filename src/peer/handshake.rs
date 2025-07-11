@@ -3,15 +3,10 @@
 //! The handshake is the first message exchanged between two peers. It verifies
 //! that both peers are participating in the same torrent (via info_hash) and
 //! establishes basic protocol compatibility.
-//!
-use crate::torrent::TorrentError;
+
 use anyhow::Result;
-use std::io::Read;
-use std::net::SocketAddr;
 use tokio::io::{AsyncReadExt, AsyncWriteExt};
 use tokio::net::TcpStream;
-use tokio::stream;
-use tokio::time::timeout;
 use tracing::instrument;
 
 /** Represents a BitTorrent handshake message as defined in the BitTorrent protocol.
