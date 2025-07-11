@@ -79,7 +79,7 @@ impl Client {
             port,
         })
     }
-    /// Sends an announce request to the tracker to get a list of peers.
+    /** Sends an announce request to the tracker to get a list of peers. */
     #[tracing::instrument(skip(self, torrent), level = "debug")]
     pub async fn announce(&self, torrent: &TorrentFile) -> Result<AnnounceResponse> {
         let request = AnnounceRequest {
@@ -109,30 +109,31 @@ impl Client {
         Self::parse_announce_response(&response_bytes)
     }
 
-    /// Parses the response from a BitTorrent tracker announce request.
-    ///
-    /// This function takes a byte slice containing the bencoded tracker response,
-    /// deserializes it into a `TrackerResponse` struct, and then extracts the list of peers.
-    /// It handles both the compact and non-compact peer list formats as specified by the BitTorrent protocol:
-    /// - **Compact format**: The "peers" field is a byte string where each peer is represented by 6 bytes
-    ///   (4 bytes for the IPv4 address and 2 bytes for the port, in network byte order).
-    /// - **Non-compact format**: The "peers" field is a list of dictionaries, each containing "ip" and "port".
-    ///
-    /// # Arguments
-    /// * `bytes` - A byte slice containing the bencoded tracker response.
-    ///
-    /// # Returns
-    /// * `Result<AnnounceResponse>` - The parsed announce response, including the interval and the list of peers.
-    ///
-    /// # Example
-    /// ```
-    /// let response_bytes = ...; // bytes from tracker
-    /// let announce_response = Client::parse_announce_response(&response_bytes)?;
-    /// println!("Interval: {}", announce_response.interval);
-    /// for peer in announce_response.peers {
-    ///     println!("Peer: {}:{}", peer.ip, peer.port);
-    /// }
-    /// ```
+    /** Parses the response from a BitTorrent tracker announce request.
+
+    This function takes a byte slice containing the bencoded tracker response,
+    deserializes it into a `TrackerResponse` struct, and then extracts the list of peers.
+    It handles both the compact and non-compact peer list formats as specified by the BitTorrent protocol:
+    - **Compact format**: The "peers" field is a byte string where each peer is represented by 6 bytes
+      (4 bytes for the IPv4 address and 2 bytes for the port, in network byte order).
+    - **Non-compact format**: The "peers" field is a list of dictionaries, each containing "ip" and "port".
+
+    # Arguments
+    * `bytes` - A byte slice containing the bencoded tracker response.
+
+    # Returns
+    * `Result<AnnounceResponse>` - The parsed announce response, including the interval and the list of peers.
+
+    # Example
+    ```
+    let response_bytes = ...; // bytes from tracker
+    let announce_response = Client::parse_announce_response(&response_bytes)?;
+    println!("Interval: {}", announce_response.interval);
+    for peer in announce_response.peers {
+        println!("Peer: {}:{}", peer.ip, peer.port);
+    }
+    ```
+    */
     fn parse_announce_response(bytes: &[u8]) -> Result<AnnounceResponse> {
         // 1. Deserialize the tracker response from bencoded bytes
         let tracker_response: TrackerResponse = serde_bencode::from_bytes(bytes)?;
@@ -170,22 +171,23 @@ impl Client {
         })
     }
 }
-/// Generates a unique peer ID for this client.
-///
-/// This function creates a 20-byte peer ID that follows the BitTorrent protocol specification.
-/// The peer ID consists of:
-/// - A 9-byte prefix identifying the client ("-RT0001-") RT = Rust torrent
-/// - 11 random bytes to ensure uniqueness
-///
-/// # Returns
-/// * `Result<[u8; 20]>` - A 20-byte peer ID, or an error if generation fails
-///
-/// # Example
-/// ```rust
-/// let peer_id = generate_peer_id()?;
-/// assert_eq!(peer_id.len(), 20);
-/// assert_eq!(&peer_id[..9], b"-GT0001-");
-///
+/** Generates a unique peer ID for this client.
+
+This function creates a 20-byte peer ID that follows the BitTorrent protocol specification.
+The peer ID consists of:
+- A 9-byte prefix identifying the client ("-RT0001-") RT = Rust torrent
+- 11 random bytes to ensure uniqueness
+
+# Returns
+* `Result<[u8; 20]>` - A 20-byte peer ID, or an error if generation fails
+
+# Example
+```rust
+let peer_id = generate_peer_id()?;
+assert_eq!(peer_id.len(), 20);
+assert_eq!(&peer_id[..9], b"-GT0001-");
+```
+*/
 fn generate_peer_id() -> Result<[u8; 20]> {
     let mut peer_id = [0u8; 20];
     let prefix = b"-RT0001-";
@@ -195,25 +197,26 @@ fn generate_peer_id() -> Result<[u8; 20]> {
     Ok(peer_id)
 }
 
-/// URL-encodes a byte slice according to RFC 3986.
-///
-/// This function performs percent-encoding of bytes that are not in the unreserved
-/// character set. Unreserved characters (a-z, A-Z, 0-9, -, ., _, ~) are left as-is,
-/// while all other characters are encoded as %XX where XX is the hexadecimal
-/// representation of the byte value.
-///
-/// # Arguments
-/// * `bytes` - The byte slice to URL-encode
-///
-/// # Returns
-/// * `String` - The URL-encoded string
-///
-/// # Example
-/// ```rust
-/// let bytes = b"Hello World!";
-/// let encoded = url_encode(bytes);
-/// assert_eq!(encoded, "Hello%20World%21");
-/// ```
+/** URL-encodes a byte slice according to RFC 3986.
+
+This function performs percent-encoding of bytes that are not in the unreserved
+character set. Unreserved characters (a-z, A-Z, 0-9, -, ., _, ~) are left as-is,
+while all other characters are encoded as %XX where XX is the hexadecimal
+representation of the byte value.
+
+# Arguments
+* `bytes` - The byte slice to URL-encode
+
+# Returns
+* `String` - The URL-encoded string
+
+# Example
+```rust
+let bytes = b"Hello World!";
+let encoded = url_encode(bytes);
+assert_eq!(encoded, "Hello%20World%21");
+```
+*/
 fn url_encode(bytes: &[u8]) -> String {
     let mut encoded = String::with_capacity(bytes.len() * 3);
     for &byte in bytes {

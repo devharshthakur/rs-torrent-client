@@ -155,32 +155,34 @@ impl Handshake {
         Ok(())
     }
 
-    /// Performs a complete handshake with a peer over a TCP connection.
-    ///
-    /// This is an `async` function because it involves network I/O.
-    ///
-    /// # How it works
-    /// 1. Establishes a TCP connection to the peer's address (IP:port).
-    /// 2. Creates and serializes our handshake message.
-    /// 3. Sends the serialized handshake over the connection.
-    /// 4. Reads and deserializes the peer's handshake response.
-    /// 5. Validates the received handshake against the expected info_hash.
-    /// 6. Returns the peer's handshake if successful.
-    ///
-    /// # Arguments
-    /// * `peer_addr` - The peer's "IP:port" string (e.g., "127.0.0.1:6881").
-    /// * `info_hash` - The torrent's info hash.
-    /// * `peer_id` - Our client's peer ID.
-    ///
-    /// # Returns
-    /// * `Result<Handshake>` - The peer's handshake if successful, or an error.
-    ///
-    /// # Errors
-    /// Returns an error if:
-    /// - The connection fails
-    /// - The peer's handshake is invalid
-    /// - The protocol length is not 19
-    /// - The protocol string is not "BitTorrent protocol"
+    /**
+    Performs a complete handshake with a peer over a TCP connection.
+
+    This is an `async` function because it involves network I/O.
+
+    # How it works
+    1. Establishes a TCP connection to the peer's address (IP:port).
+    2. Creates and serializes our handshake message.
+    3. Sends the serialized handshake over the connection.
+    4. Reads and deserializes the peer's handshake response.
+    5. Validates the received handshake against the expected info_hash.
+    6. Returns the peer's handshake if successful.
+
+    # Arguments
+    `peer_addr` - The peer's "IP:port" string (e.g., "127.0.0.1:6881").
+    `info_hash` - The torrent's info hash.
+    `peer_id` - Our client's peer ID.
+
+    # Returns
+    `Result<Handshake>` - The peer's handshake if successful, or an error.
+
+    # Errors
+    Returns an error if:
+    - The connection fails
+    - The peer's handshake is invalid
+    - The protocol length is not 19
+    - The protocol string is not "BitTorrent protocol"
+    */
     pub async fn do_handshake(
         peer_addr: String,
         info_hash: [u8; 20],

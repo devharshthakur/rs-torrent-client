@@ -2,6 +2,15 @@
 
 Thank you for your interest in contributing! Please follow these guidelines to ensure a smooth contribution process.
 
+## 🧠 Project Context File for AI Agents
+
+- The project maintains a **context file** at [context.md](md/context.md).
+- **Purpose:** This file provides a comprehensive, up-to-date overview of the project for AI agents for contributors convenience, includes architecture, module responsibilities, current status, and goals.
+- **How to use:**
+  - **Use** the context file by passing it to your ai agents so that they can understand the project context and architecture.
+  - **Update** the context file in your PR if your changes introduce new modules, features, or alter the project structure/logic. This ensures AI agents have accurate context.
+  - **Reference** the context file in your PR description if your changes are significant or architectural.
+
 ## 📝 Issue First Workflow
 
 - **Create an issue** describing your feature, bug, or improvement, or **get assigned** to an existing issue.
@@ -34,7 +43,8 @@ Thank you for your interest in contributing! Please follow these guidelines to e
   - Reference the related issue
   - Summarize testing performed
   - List any follow-up work or known issues
-- PRs for code improvements and code reviews are highly appreciated. For improvements, please submition of PR with the changes applied are highly appreciated.
+  - **Always update the context file** if changes are substantcial such as feature additions, structural changes etc if it impacts the overall project context .
+- PRs for code improvements and code reviews are highly appreciated. For improvements, submition of PR with the changes applied are highly appreciated.
 
 ## 🧑‍💻 Setup Instructions
 
