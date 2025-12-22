@@ -1,10 +1,10 @@
-# 🎯 Project Goals & Planned Features
+# Project Goals & Planned Features
 
 This document outlines the long-term goals and planned features for the client.
 
 ---
 
-## 🌟 Project Goals
+## Project Goals
 
 - **Modern, type-safe BitTorrent client in Rust**
 - **Robust bencode parser/encoder** for all BitTorrent metadata
@@ -17,7 +17,7 @@ This document outlines the long-term goals and planned features for the client.
 
 ---
 
-## 🛣️ Planned Features
+## Planned Features
 
 - Magnet link support
 - Metadata exchange protocol (BEP 9)

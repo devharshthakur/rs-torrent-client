@@ -1,18 +1,29 @@
-# 🚧 Rust Torrent Client
+# Rust Torrent Client
 
-A **BitTorrent client** implementation in Rust, aiming to support downloading files using the BitTorrent protocol. This project is a work-in-progress and currently in its **very early phase**—core components are being built from the ground up! 🦀
+A **BitTorrent client** implementation in Rust, aiming to support downloading files using the BitTorrent protocol. This project is a work-in-progress and currently in its **very early phase**—core components are being built from the ground up!
 
-📝 **This project is a Rust rewrite of the original [Go Torrent Client](https://github.com/piyushgupta53/go-torrent-client).**
+**This project is a Rust rewrite of the original [Go Torrent Client](https://github.com/piyushgupta53/go-torrent-client).** by [Piyush Gupta](https://github.com/piyushgupta53)
 
-## 📈 Project Status
+## Project Status
 
 The current implementation status and roadmap are tracked in [docs/CHECKPOINT.md](md/checkpoint.md). Please refer to it for up-to-date progress and details on what is implemented.
 
 For the project's long-term goals and planned features, see [goals.md](md/goals.md).
 
-## 📁 Project Structure
+## Usage
 
-```
+Common development tasks can be run using `just`:
+
+- `just run` - Format code and run the application
+- `just format` - Format Rust code and Markdown files
+- `just build` - Format and build the project
+- `just clean` - Clean build artifacts
+
+See the `justfile` for all available commands.
+
+## Project Structure
+
+```text
 src/
   ├── main.rs         # Binary entry point
   ├── lib.rs          # Library root, re-exports modules
@@ -31,7 +42,7 @@ src/
         └── handshake.rs
 ```
 
-## 🙏 Acknowledgments
+## Acknowledgments
 
 - Inspired by the original [Go Torrent Client](https://github.com/piyushgupta53/go-torrent-client) ([piyushgupta53/go-torrent-client](https://github.com/piyushgupta53/go-torrent-client))
 - [BitTorrent Protocol Specification](https://wiki.theory.org/BitTorrentSpecification)
