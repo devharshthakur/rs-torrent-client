@@ -106,7 +106,7 @@ fn parse_announce_list(value: BencodeValue) -> Result<Vec<Vec<String>>> {
                                     return Err(TorrentError::InvalidFormat(
                                         "Tracker URL not a string".to_string(),
                                     )
-                                    .into())
+                                    .into());
                                 }
                             }
                         }
@@ -116,7 +116,7 @@ fn parse_announce_list(value: BencodeValue) -> Result<Vec<Vec<String>>> {
                         return Err(TorrentError::InvalidFormat(
                             "Announce tier not a list".to_string(),
                         )
-                        .into())
+                        .into());
                     }
                 }
             }
@@ -140,7 +140,7 @@ fn parse_info_dict(value: BencodeValue) -> Result<InfoDict> {
     let dict = match value {
         BencodeValue::Dict(d) => d,
         _ => {
-            return Err(TorrentError::InvalidFormat("Info is not a dictionary".to_string()).into())
+            return Err(TorrentError::InvalidFormat("Info is not a dictionary".to_string()).into());
         }
     };
 
@@ -188,7 +188,7 @@ fn parse_info_dict(value: BencodeValue) -> Result<InfoDict> {
                     let length = match file_dict.get(&b"length".to_vec()) {
                         Some(BencodeValue::Integer(i)) => *i,
                         _ => {
-                            return Err(TorrentError::MissingField("file length".to_string()).into())
+                            return Err(TorrentError::MissingField("file length".to_string()).into());
                         }
                     };
 
@@ -352,7 +352,7 @@ impl TorrentFile {
             _ => {
                 return Err(
                     TorrentError::InvalidFormat("Root is not a dictionary".to_string()).into(),
-                )
+                );
             }
         };
 
@@ -398,7 +398,7 @@ impl TorrentFile {
                     return Err(TorrentError::InvalidFormat(
                         "Creation date not an integer".to_string(),
                     )
-                    .into())
+                    .into());
                 }
             }
         } else {
