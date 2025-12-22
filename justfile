@@ -35,3 +35,20 @@ build:
 clean:
     cargo clean
 
+# Docker Compose commands
+docker-down:
+    # Stop and remove containers
+    docker compose -f docker/docker-compose.yml down
+
+docker-rm-images:
+    # Remove containers and images created by docker compose
+    docker compose -f docker/docker-compose.yml down --rmi all
+
+docker-rm-volumes:
+    # Remove containers and volumes created by docker compose
+    docker compose -f docker/docker-compose.yml down -v
+
+docker-clean:
+    # Remove containers, images, and volumes (complete cleanup)
+    docker compose -f docker/docker-compose.yml down --rmi all -v
+

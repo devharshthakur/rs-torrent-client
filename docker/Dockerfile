@@ -1,7 +1,7 @@
 # Development Dockerfile for rs-torrent-client
 # This image provides a consistent development environment for contributors
 
-FROM rust:slim
+FROM rust:1-bookworm
 
 # Install system dependencies
 RUN apt-get update && apt-get install -y \
@@ -9,32 +9,21 @@ RUN apt-get update && apt-get install -y \
     git \
     pkg-config \
     libssl-dev \
+    build-essential \
     ca-certificates \
     && rm -rf /var/lib/apt/lists/*
 
-# Install just (command runner)
-RUN curl --proto '=https' --tlsv1.2 -sSf https://just.systems/install.sh | bash -s -- --to /usr/local/bin
+# Install just (command runner) via cargo
+RUN cargo install just
 
-# Install pnpm (for markdown formatting)
-RUN curl -fsSL https://get.pnpm.io/install.sh | sh -
-ENV PNPM_HOME="/root/.local/share/pnpm"
-ENV PATH="$PNPM_HOME:$PATH"
+# Ensure stable toolchain and install clippy (required for rust-analyzer check on save)
+RUN rustup default stable && \
+    rustup component add clippy
+
+# Install Node.js v24 (LTS) and pnpm via apt (NodeSource)
+RUN curl -fsSL https://deb.nodesource.com/setup_24.x | bash - && \
+    apt-get install -y nodejs && \
+    npm install -g pnpm@latest
 
 # Set working directory
 WORKDIR /workspace
-
-# Copy dependency files first for better caching
-COPY Cargo.toml Cargo.lock ./
-COPY package.json pnpm-lock.yaml ./
-
-# Install pnpm dependencies
-RUN pnpm install --frozen-lockfile
-
-# Copy the rest of the project
-COPY . .
-
-# Pre-build dependencies to speed up subsequent builds
-RUN cargo fetch
-
-# Default command (can be overridden)
-CMD ["/bin/bash"]

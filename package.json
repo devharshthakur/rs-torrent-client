@@ -8,10 +8,10 @@
   },
   "author": "Harsh Thakur",
   "license": "MIT",
-  "packageManager": "pnpm@10.13.1",
+  "packageManager": "pnpm@10.26.1",
   "devDependencies": {
-    "@types/node": "^24.0.12",
-    "prettier": "^3.6.2",
-    "typescript": "^5.8.3"
+    "@types/node": "^24.10.4",
+    "prettier": "^3.7.4",
+    "typescript": "^5.9.3"
   }
 }

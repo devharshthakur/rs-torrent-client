@@ -1,37 +1,21 @@
-version: '3.8'
-
 services:
   dev:
     build:
       context: ..
       dockerfile: docker/Dockerfile
-    container_name: rs-torrent-client-dev
     volumes:
-      # Mount the entire project directory for live development
       - ..:/workspace
-      # Cache cargo registry and git dependencies
+      # Cache cargo dependencies for faster rebuilds
       - cargo-cache:/usr/local/cargo/registry
       - cargo-git:/usr/local/cargo/git
-      # Cache cargo build artifacts (optional, can speed up builds)
-      - cargo-target:/workspace/target
     working_dir: /workspace
     # Keep container running
-    stdin_open: true
-    tty: true
-    # Use host network for easier networking (optional)
+    command: sleep infinity
+    # Use host networking for the torrent client
     network_mode: host
-    # Environment variables
     environment:
-      - CARGO_HOME=/usr/local/cargo
       - RUST_BACKTRACE=1
-    # Override default command to keep container alive
-    command: tail -f /dev/null
 
 volumes:
   cargo-cache:
-    driver: local
   cargo-git:
-    driver: local
-  cargo-target:
-    driver: local
-
