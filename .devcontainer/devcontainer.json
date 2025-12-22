@@ -1,0 +1,62 @@
+{
+	"name": "Rust Torrent Client Dev Container",
+	"dockerComposeFile": "../docker/docker-compose.yml",
+	"service": "dev",
+	"workspaceFolder": "/workspace",
+	
+	// Features to add to the dev container
+	"features": {
+		"ghcr.io/devcontainers/features/git:1": {},
+		"ghcr.io/devcontainers/features/github-cli:1": {}
+	},
+
+	// VS Code extensions to install
+	"customizations": {
+		"vscode": {
+			"extensions": [
+				"rust-lang.rust-analyzer",
+				"vadimcn.vscode-lldb",
+				"serayuzgur.crates",
+				"tamasfe.even-better-toml",
+				"usernamehw.errorlens",
+				"ms-vscode.vscode-json"
+			],
+			"settings": {
+				"rust-analyzer.checkOnSave.command": "clippy",
+				"rust-analyzer.cargo.allFeatures": true,
+				"editor.formatOnSave": true,
+				"editor.defaultFormatter": "rust-lang.rust-analyzer",
+				"[rust]": {
+					"editor.defaultFormatter": "rust-lang.rust-analyzer",
+					"editor.formatOnSave": true
+				},
+				"[toml]": {
+					"editor.defaultFormatter": "tamasfe.even-better-toml"
+				},
+				"[markdown]": {
+					"editor.defaultFormatter": "esbenp.prettier-vscode",
+					"editor.formatOnSave": true
+				}
+			}
+		}
+	},
+
+	// Post-create command to run after container is created
+	"postCreateCommand": "pnpm install && cargo fetch",
+
+	// Forward ports (if your app needs to listen on ports)
+	// "forwardPorts": [8080, 3000],
+
+	// Use 'forwardPorts' to make a list of ports inside the container available locally.
+	// "forwardPorts": [],
+
+	// Comment out to connect as root instead. More info: https://aka.ms/vscode-remote/containers/non-root.
+	"remoteUser": "root",
+
+	// Environment variables
+	"remoteEnv": {
+		"CARGO_HOME": "/usr/local/cargo",
+		"RUST_BACKTRACE": "1"
+	}
+}
+

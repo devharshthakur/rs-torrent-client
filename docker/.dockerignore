@@ -1,0 +1,42 @@
+# Git files
+.git
+.gitignore
+.gitattributes
+
+# Build artifacts
+target/
+*.rs.bk
+*.pdb
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Documentation build outputs
+*.md.bak
+
+# Docker files (don't copy into container)
+docker/
+docker-compose.yml
+Dockerfile
+.dockerignore
+
+# Node modules (will be installed in container)
+node_modules/
+
+# Cargo lock (will be copied separately for caching)
+# Cargo.lock
+
+# Test files and temporary files
+*.tmp
+*.log
+*.cache
+
+# OS files
+Thumbs.db
+.DS_Store
+
