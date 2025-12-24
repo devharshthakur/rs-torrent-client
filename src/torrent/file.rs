@@ -188,7 +188,9 @@ fn parse_info_dict(value: BencodeValue) -> Result<InfoDict> {
                     let length = match file_dict.get(&b"length".to_vec()) {
                         Some(BencodeValue::Integer(i)) => *i,
                         _ => {
-                            return Err(TorrentError::MissingField("file length".to_string()).into());
+                            return Err(
+                                TorrentError::MissingField("file length".to_string()).into()
+                            );
                         }
                     };
 
